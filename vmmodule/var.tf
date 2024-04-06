@@ -33,4 +33,5 @@ variable "virtual_machines" {
     subnet = string
     size   = string
   }))
+
 }

@@ -23,7 +23,7 @@ resource "azurerm_subnet" "subnet" {
 
 #azurerm_public_ip
 resource "azurerm_public_ip" "publicip" {
-    for_each = { for vm in var.virtual_machines : "${vm.name}" => vm }
+   for_each = try({ for vm in var.virtual_machines : "${vm.name}" => vm }, {})
     name                = "networking-practice-publicip-${each.value.name}"
     resource_group_name = azurerm_resource_group.rg.name
     location            = azurerm_resource_group.rg.location
@@ -33,7 +33,7 @@ resource "azurerm_public_ip" "publicip" {
 }
 #azurerm_network_interface
 resource "azurerm_network_interface" "nic" {
-    for_each = { for vm in var.virtual_machines : "${vm.name}" => vm }
+    for_each = try({ for vm in var.virtual_machines : "${vm.name}" => vm }, {})
     name                = "networking-practice-nic-${each.value.name}"
     location            = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
@@ -95,7 +95,7 @@ resource "azurerm_network_interface_security_group_association" "nsg_association
 }
 #azurerm_windows_virtual_machine
 resource "azurerm_windows_virtual_machine" "vm" {
-    for_each = { for vm in var.virtual_machines : "${vm.name}" => vm }
+    for_each = try({ for vm in var.virtual_machines : "${vm.name}" => vm }, {})
     name                = "${each.value.name}-${azurerm_resource_group.rg.location}"
     resource_group_name = azurerm_resource_group.rg.name
     location            = azurerm_resource_group.rg.location
@@ -117,7 +117,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
 }
 #azurerm_virtual_machine_extension 
 resource "azurerm_virtual_machine_extension" "installIIS" {
-    for_each = { for vm in var.virtual_machines : "${vm.name}" => vm }
+    for_each = try({ for vm in var.virtual_machines : "${vm.name}" => vm }, {})
     name                 = "installIIS7-${each.value.name}"
     virtual_machine_id   = azurerm_windows_virtual_machine.vm[each.key].id
   publisher            = "Microsoft.Compute"
