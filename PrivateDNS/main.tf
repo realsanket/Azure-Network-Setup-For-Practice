@@ -34,7 +34,7 @@ locals {
 
 }
 module "test" {
-    source = "./vmmodule"
+    source = "../vmmodule"
     for_each = local.vm_details
     resource_group_name = each.value.resource_group_name
     location = each.value.location
@@ -44,7 +44,7 @@ module "test" {
     virtual_machines = try(each.value.virtual_machines, [])
 }
 module "appservice" {
-  source = "./appService"
+  source = "../appService"
   for_each = local.app_service
   name                = each.key
   resource_group_name = each.value["resource_group_name"]
