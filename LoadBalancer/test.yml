@@ -26,7 +26,7 @@ infra_details:
           # - webapp2
           # - webapp3
   - resource_group_name: rg2
-    location: East US
+    location: Central India
     virtual_network:
         name: vnet2
         address_space: ["10.1.0.0/16"]

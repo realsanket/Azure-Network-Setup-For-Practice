@@ -22,15 +22,15 @@ resource "azurerm_subnet" "subnet" {
 }
 
 #azurerm_public_ip
-resource "azurerm_public_ip" "publicip" {
-   for_each = try({ for vm in var.virtual_machines : "${vm.name}" => vm }, {})
-    name                = "networking-practice-publicip-${each.value.name}"
-    resource_group_name = azurerm_resource_group.rg.name
-    location            = azurerm_resource_group.rg.location
-    allocation_method   = "Dynamic"
-    domain_name_label   = "networkingpractice${each.value.name}"
-    depends_on = [ azurerm_resource_group.rg ]
-}
+# resource "azurerm_public_ip" "publicip" {
+#    for_each = try({ for vm in var.virtual_machines : "${vm.name}" => vm }, {})
+#     name                = "networking-practice-publicip-${each.value.name}"
+#     resource_group_name = azurerm_resource_group.rg.name
+#     location            = azurerm_resource_group.rg.location
+#     allocation_method   = "Dynamic"
+#     domain_name_label   = "networkingpractice${each.value.name}"
+#     depends_on = [ azurerm_resource_group.rg ]
+# }
 #azurerm_network_interface
 resource "azurerm_network_interface" "nic" {
     for_each = try({ for vm in var.virtual_machines : "${vm.name}" => vm }, {})
@@ -41,9 +41,9 @@ resource "azurerm_network_interface" "nic" {
         name                          = "internal"
         subnet_id                     = azurerm_subnet.subnet[each.value.subnet].id
         private_ip_address_allocation = "Dynamic"
-        public_ip_address_id          = azurerm_public_ip.publicip[each.key].id
+        # public_ip_address_id          = azurerm_public_ip.publicip[each.key].id
     }
-    depends_on = [ azurerm_public_ip.publicip ]
+    # depends_on = [ azurerm_public_ip.publicip ]
 }
 resource "azurerm_network_security_group" "nsg" {
     name                = "networking-practice-nsg"
@@ -96,7 +96,7 @@ resource "azurerm_network_interface_security_group_association" "nsg_association
 #azurerm_windows_virtual_machine
 resource "azurerm_windows_virtual_machine" "vm" {
     for_each = try({ for vm in var.virtual_machines : "${vm.name}" => vm }, {})
-    name                = "${each.value.name}-${azurerm_resource_group.rg.location}"
+    name = substr("${each.value.name}-${azurerm_resource_group.rg.location}", 0, min(length("${each.value.name}-${azurerm_resource_group.rg.location}"), 15))
     resource_group_name = azurerm_resource_group.rg.name
     location            = azurerm_resource_group.rg.location
     network_interface_ids = [azurerm_network_interface.nic[each.key].id]
