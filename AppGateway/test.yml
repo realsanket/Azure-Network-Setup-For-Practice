@@ -1,0 +1,28 @@
+infra_details:
+  - resource_group_name: rg1
+    location: Central US
+    virtual_network:
+        name: vnet1
+        address_space: ["10.0.0.0/16"]
+        subnets:
+          - name: front-end
+            address_prefix: "10.0.0.0/24"
+          - name: back-end
+            address_prefix: "10.0.1.0/24"
+          - name: database
+            address_prefix: "10.0.2.0/24"
+    virtual_machines:
+        - name: vm1
+          subnet: front-end
+          size: Standard_D2s_v3
+        - name: vm2
+          subnet: back-end
+          size: Standard_D2s_v3
+        # - name: vm3
+        #   subnet: database
+        #   size: Standard_D2s_v3
+    webapp:
+          - webapp1
+          - webapp2
+          - webapp3
+   
