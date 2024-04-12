@@ -1,0 +1,7 @@
+sudo vim /private/etc/hosts
+
+Add the following line to the file:
+19.12.123.122 www.example.com
+
+sudo cat /private/etc/hosts
+sudo killall -HUP mDNSResponder
