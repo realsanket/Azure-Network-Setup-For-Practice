@@ -5,3 +5,7 @@ Add the following line to the file:
 
 sudo cat /private/etc/hosts
 sudo killall -HUP mDNSResponder
+
+#genreate self signed certificate
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./test.key -out ./test.crt
+openssl pkcs12 -export -out test.pfx -inkey test.key -in test.crt

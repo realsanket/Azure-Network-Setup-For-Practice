@@ -74,6 +74,10 @@ resource "azurerm_application_gateway" "network" {
     name  ="app_service_5_6_backend_pool"
     fqdns = [local.web_app_domain[4], local.web_app_domain[5]]
   }
+  backend_address_pool {
+    name  ="app_service_7_8_backend_pool"
+    fqdns = [local.web_app_domain[6], local.web_app_domain[7]]
+  }
 
   # Define backend HTTP settings
   backend_http_settings {
@@ -94,7 +98,6 @@ resource "azurerm_application_gateway" "network" {
 
   }
 
- 
 
   rewrite_rule_set {
     name = "rewrite_rule_set_for_app_service_1_2"
@@ -190,12 +193,26 @@ resource "azurerm_application_gateway" "network" {
   }
 
   ####################
-  #uncomment the below code to enable for testing internal load balancer
-    frontend_ip_configuration {
-    name                 = "app_gateway_frontend_ip_internal"
-    subnet_id = azurerm_subnet.gateway_subnet.id
-    private_ip_address    = "10.0.3.11"
-    private_ip_address_allocation = "Static"
-
-  }
+  #uncomment the below code to enable for testing internal load balancer 
+  ## not completed yet 
+  #   frontend_ip_configuration {
+  #   name                 = "app_gateway_frontend_ip_internal"
+  #   subnet_id = azurerm_subnet.gateway_subnet.id
+  #   private_ip_address    = "10.0.3.11"
+  #   private_ip_address_allocation = "Static"
+  # }
+  # http_listener {
+  #   name                           = "app_gateway_http_listener_internal"
+  #   frontend_ip_configuration_name = "app_gateway_frontend_ip_internal"
+  #   frontend_port_name             = "frontend_port_80_http"
+  #   protocol                       = "Http"
+  # }
+  # request_routing_rule {
+  #   name                           = "app_gateway_routing_rule_internal"
+  #   rule_type                      = "Basic"
+  #   http_listener_name             = "app_gateway_http_listener_internal"
+  #   backend_address_pool_name      = "app_service_1_2_backend_pool"
+  #   backend_http_settings_name     = "app_gateway_backend_http_settings"
+  #   priority                       = 1
+  # }
 }

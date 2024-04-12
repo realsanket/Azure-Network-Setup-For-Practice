@@ -25,4 +25,6 @@ infra_details:
           - webapp4
           - webapp5
           - webapp6
+          - webapp7
+          - webapp8
    
